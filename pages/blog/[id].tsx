@@ -9,6 +9,9 @@ type Post = {
   id: string
   title: string
   body: string
+  category: {
+    name: string
+  }
   publishedAt: string
 }
 
@@ -24,6 +27,7 @@ const BlogDetail: React.FC<Props> = ({ post }) => {
     <div>
       <h1>{post.title}</h1>
       <p>{post.publishedAt}</p>
+      <p>{post.category?.name}</p>
       <div dangerouslySetInnerHTML={{ __html: `${post.body}` }}></div>
     </div>
   )
