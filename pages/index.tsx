@@ -1,11 +1,10 @@
-import { InferGetStaticPropsType } from 'next'
 import Link from 'next/link'
-import styled from 'styled-components'
-import { Button, lighten } from '@material-ui/core'
 
 import { client } from 'libs/client'
 
-type Props = InferGetStaticPropsType<typeof getStaticProps>
+type Props = {
+  posts: Post[]
+}
 
 type Post = {
   id: string
@@ -20,14 +19,14 @@ type StaticProps = {
   limit: number
 }
 
-const Home: React.FC<Props> = ({ blog }) => {
+const Home: React.FC<Props> = ({ posts }) => {
   return (
     <>
       <ul>
-        {blog.map((b) => (
-          <li key={b.id}>
-            <Link href={`/blog/${b.id}`}>
-              <a>{b.title}</a>
+        {posts.map((post) => (
+          <li key={post.id}>
+            <Link href={`/blog/${post.id}`}>
+              <a>{post.title}</a>
             </Link>
           </li>
         ))}
@@ -41,7 +40,7 @@ export const getStaticProps = async () => {
 
   return {
     props: {
-      blog: data.contents
+      posts: data.contents
     }
   }
 }
