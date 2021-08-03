@@ -1,19 +1,49 @@
-import React from 'react'
+import { InferGetStaticPropsType } from 'next'
+import Link from 'next/link'
 import styled from 'styled-components'
-import { Button } from '@material-ui/core'
+import { Button, lighten } from '@material-ui/core'
 
-const Title = styled.h1`
-  color: blue;
-  font-size: 50px;
-`
+import { client } from 'libs/client'
 
-const Home: React.FC = () => {
+type Props = InferGetStaticPropsType<typeof getStaticProps>
+
+type Post = {
+  id: string
+  title: string
+  body: string
+}
+
+type StaticProps = {
+  contents: Post[]
+  totalCount: number
+  offset: number
+  limit: number
+}
+
+const Home: React.FC<Props> = ({ blog }) => {
   return (
     <>
-      <Title>My page</Title>
-      <Button>TEST</Button>
+      <ul>
+        {blog.map((b) => (
+          <li key={b.id}>
+            <Link href={`/blog/${b.id}`}>
+              <a>{b.title}</a>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </>
   )
+}
+
+export const getStaticProps = async () => {
+  const data = await client.get<StaticProps>({ endpoint: 'blog' })
+
+  return {
+    props: {
+      blog: data.contents
+    }
+  }
 }
 
 export default Home
