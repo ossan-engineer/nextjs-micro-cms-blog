@@ -24,6 +24,7 @@ const BlogDetail: React.FC<Props> = ({ post }) => {
     <div>
       <h1>{post.title}</h1>
       <p>{post.publishedAt}</p>
+      <div dangerouslySetInnerHTML={{ __html: `${post.body}` }}></div>
     </div>
   )
 }
